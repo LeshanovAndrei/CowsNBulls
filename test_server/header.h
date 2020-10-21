@@ -9,3 +9,4 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
+#include <cstring>

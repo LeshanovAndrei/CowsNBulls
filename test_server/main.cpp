@@ -87,11 +87,12 @@ int main(int argc, char* argv[])
 
 
 	//Пошлем количество игроков
-	std::cout << "OUT:\n";
+	std::cout << "\nOUT:\n";
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
 		char msg[2];
 		itoa(numOfPlayers, msg, 10);
+		msg[1] = '\0';
 		std::cout << msg << '\n';
 		players[i].SendMsg(msg);
 	}
@@ -104,10 +105,14 @@ int main(int argc, char* argv[])
 	{
 		for (size_t j = 0; j < numOfPlayers; j++)
 		{
-			char msg[32];
+			char *msg = new char[players[j].GetName().size() + 3];
 			msg[0] = j + 48;
 			msg[1] = ' ';
-			strcat(msg, players[j].GetName().c_str());
+			for (size_t i = 2; i < players[j].GetName().size() + 3; i++)
+			{
+				msg[i] = players[j].GetName()[i - 2];
+				msg[i + 1] = '\0';
+			}
 			std::cout << msg << '\n';
 			players[i].SendMsg(msg);
 		}
@@ -120,6 +125,7 @@ int main(int argc, char* argv[])
 	{
 		char msg[2];
 		itoa(comp, msg, 2);
+		msg[1] = '\0';
 		std::cout << msg << '\n';
 		players[i].SendMsg(msg);
 	}
@@ -157,6 +163,7 @@ int main(int argc, char* argv[])
 					{
 						char msg[2];
 						itoa(j, msg, 2);
+						msg[1] = '\0';
 						std::cout << msg << '\n';
 						players[i].SendMsg(msg);
 					}
@@ -172,17 +179,16 @@ int main(int argc, char* argv[])
 					players[j].SetCows(players[j].GetCows() + cows);
 					//Создание сообщения ответа и реакции
 					std::cout << "OUT:\n";
-					char msgTo[12];
+					char msgTo[9];
 					for (size_t f = 0; f < 4; f++)
 					{
 						msgTo[f] = reply[f];
 					}
-					strcat(msgTo, " ");
-					char buff[2];
-					strcat(msgTo, itoa(bulls, buff, 10));
-					strcat(msgTo, " ");
-					char buff2[2];
-					strcat(msgTo, itoa(cows, buff2, 10));
+					msgTo[4] = ' ';
+					msgTo[5] = bulls + 48;
+					msgTo[6] = ' ';
+					msgTo[7] = cows + 48;
+					msgTo[8] = '\0';
 					//Отсылаем ответ игрока и реакцию на него
 					for (size_t n = 0; n < numOfPlayers; n++)
 					{
