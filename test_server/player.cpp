@@ -67,9 +67,10 @@ char* Player::GetMsg()
 	int n = temp[0];
 	if (n < 1)
 	{
+		std::cout << "Connection error!\n";
 		exit(1);
 	}
-	std::cout << n<<'\n';
+	//std::cout << n<<'\n';
 	char* msg = new char[n+1];
 	recv(connection, msg, n, NULL);
 	msg[n] = '\0';

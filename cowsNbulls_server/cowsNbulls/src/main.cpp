@@ -9,6 +9,22 @@ bool compar(Player a, Player b) {
 
 }
 
+void ConnectionError(SOCKET &sListen, SOCKET &newConnection, std::vector<Player> &players)
+{
+	std::cout << "Connetcion Error!\n";
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		char error[] = "ConnectionError!";
+		players[i].SendMsg(error);
+		players[i].~Player();
+	}
+	shutdown(newConnection, 2);
+	shutdown(sListen, 2);
+	closesocket(newConnection);
+	closesocket(sListen);
+	exit(1);
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc < 3)
@@ -69,6 +85,7 @@ int main(int argc, char* argv[])
 	{
 		stickman.RandomizeAnswer();
 		std::cout << "Answer generated!\n";
+		std::cout << stickman.GetAnswerNumber() << '\n';
 	}
 
 
@@ -79,37 +96,53 @@ int main(int argc, char* argv[])
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
 		players[i].SetName();
+		if (players[i].GetName() == "-1")
+		{
+			ConnectionError(sListen, newConnection, players);
+		}
 	}
 
 	//Пошлем количество игроков
+	//std::cout << "\nOUT:\n";
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
 		char msg[2];
 		itoa(numOfPlayers, msg, 10);
+		msg[1] = '\0';
+		//std::cout << msg << '\n';
 		players[i].SendMsg(msg);
 	}
 
 	/*
 	Теперь нужно отправить всем игрокам имена остальных
 	*/
+	//std::cout << "OUT:\n";
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
 		for (size_t j = 0; j < numOfPlayers; j++)
 		{
-			char msg[32];
+			char* msg = new char[players[j].GetName().size() + 3];
 			msg[0] = j + 48;
 			msg[1] = ' ';
-			strcat(msg, players[j].GetName().c_str());
+			for (size_t i = 2; i < players[j].GetName().size() + 3; i++)
+			{
+				msg[i] = players[j].GetName()[i - 2];
+				msg[i + 1] = '\0';
+			}
+			//std::cout << msg << '\n';
 			players[i].SendMsg(msg);
 		}
 
 	}
 
 	//Отправим флажок, участвует ли сервер в загадывании числа
+	//std::cout << "OUT:\n";
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
 		char msg[2];
 		itoa(comp, msg, 2);
+		msg[1] = '\0';
+		//std::cout << msg << '\n';
 		players[i].SendMsg(msg);
 	}
 
@@ -119,71 +152,93 @@ int main(int argc, char* argv[])
 		bool victory = false;
 		if (!comp)
 		{
+			//std::cout << "OUT:\n";
 			for (size_t c = 0; c < numOfPlayers; c++)
 			{
 				char msg[2];
 				itoa(i, msg, 2);
+				//std::cout << msg << '\n';
 				players[c].SendMsg(msg);
 			}
-			stickman.SetAnswerNumber(players[i].GetMsg());
+			//std::cout << "IN:\n";
+			auto reply = players[i].GetMsg();
+			if (reply == "-1")
+			{
+				ConnectionError(sListen, newConnection, players);
+			}
+			stickman.SetAnswerNumber(reply);
+			delete[] reply;
+			//std::cout << stickman.GetAnswerNumber() << '\n';
 		}
 
-			while (!victory)//Пока не победа продолжай опрашивать
+		while (!victory)//Пока не победа продолжай опрашивать
+		{
+			for (size_t j = 0; j < numOfPlayers; j++)//Опрашивай всех по очереди
 			{
-				for (size_t j = 0; j < numOfPlayers; j++)//Опрашивай всех по очереди
+				if (!comp and j == i)
 				{
-					if (!comp and j == i)
-					{
-						continue;
-					}
-					//Скажем всем, от кого мы ждем ответа
-					for (size_t c = 0; c < numOfPlayers; c++)
-					{
-						char msg[2];
-						itoa(j, msg, 2);
-						players[i].SendMsg(msg);
-					}
-					//Получим ответ
-					char* reply = players[j].GetMsg();
-					//Проверяем ответ от j-го игрока
-					int bulls = stickman.AnswerCheck(reply)[0];
-					int cows = stickman.AnswerCheck(reply)[1];
-					//обновим статистику ответившего
-					players[j].SetBulls(players[j].GetBulls() + bulls);
-					players[j].SetCows(players[j].GetCows() + cows);
-					//Создание сообщения ответа и реакции
-					char msgTo[12];
-					for (size_t f = 0; f < 4; f++)
-					{
-						msgTo[f] = reply[f];
-					}
-					strcat(msgTo, " ");
-					char buff[2];
-					strcat(msgTo, itoa(bulls, buff, 10));
-					strcat(msgTo, " ");
-					char buff2[2];
-					strcat(msgTo, itoa(cows, buff2, 10));
-					//Отсылаем ответ игрока и реакцию на него
+					continue;
+				}
+				//Скажем всем, от кого мы ждем ответа
+				//std::cout << "OUT:\n";
+				for (size_t c = 0; c < numOfPlayers; c++)
+				{
+					char msg[2];
+					itoa(j, msg, 2);
+					msg[1] = '\0';
+					//std::cout << msg << '\n';
+					players[i].SendMsg(msg);
+				}
+				//Получим ответ
+				//std::cout << "IN:\n";
+				char* reply = players[j].GetMsg();
+				if (reply[0] == '\0')
+				{
+					ConnectionError(sListen, newConnection, players);
+				}
+				//std::cout << reply << '\n';
+				//Проверяем ответ от j-го игрока
+				int bulls = stickman.AnswerCheck(reply)[0];
+				int cows = stickman.AnswerCheck(reply)[1];
+				//обновим статистику ответившего
+				players[j].SetBulls(players[j].GetBulls() + bulls);
+				players[j].SetCows(players[j].GetCows() + cows);
+				//Создание сообщения ответа и реакции
+				//std::cout << "OUT:\n";
+				char msgTo[9];
+				for (size_t f = 0; f < 4; f++)
+				{
+					msgTo[f] = reply[f];
+				}
+				msgTo[4] = ' ';
+				msgTo[5] = bulls + 48;
+				msgTo[6] = ' ';
+				msgTo[7] = cows + 48;
+				msgTo[8] = '\0';
+				//Отсылаем ответ игрока и реакцию на него
+				for (size_t n = 0; n < numOfPlayers; n++)
+				{
+					//std::cout << msgTo << '\n';
+					players[n].SendMsg(msgTo);
+				}
+				//проверим на победу
+				if (bulls == 4)
+				{
+					players[j].SetWins(players[j].GetWins() + 1);
+					victory = true;
+					//Отошлем всем сообщение о конце раунда
+					//std::cout << "OUT:\n";
 					for (size_t n = 0; n < numOfPlayers; n++)
 					{
-						players[n].SendMsg(msgTo);
+						char vMsg[2] = "V";
+						//std::cout << vMsg << '\n';
+						players[n].SendMsg(vMsg);
 					}
-					//проверим на победу
-					if (bulls == 4)
-					{
-						players[j].SetWins(players[j].GetWins() + 1);
-						victory = true;
-						//Отошлем всем сообщение о конце раунда
-						for (size_t n = 0; n < numOfPlayers; n++)
-						{
-							char vMsg[2] = "V";
-							players[n].SendMsg(vMsg);
-						}
-						break;
-					}
-
+					break;
 				}
+
 			}
+		}
 	}
 
 	//Формирование и отправка таблицы результатов
@@ -192,14 +247,15 @@ int main(int argc, char* argv[])
 	{
 		for (size_t j = 0; j < numOfPlayers; j++)
 		{
-			char msg[256];
+			//0 Name 3
+			int n = players[j].GetName().length();
+			char* msg = new char[n + 1];
 			msg[0] = j + 48;
 			msg[1] = ' ';
 			strcat(msg, players[j].GetName().c_str());
-			strcat(msg, " ");
-			char temp[32];
-			itoa(players[j].GetWins(), temp, 10);
-			strcat(msg, temp);
+			msg[players[j].GetName().length() + 2] = ' ';
+			msg[players[j].GetName().length() + 3] = players[j].GetWins() + 48;
+			msg[players[j].GetName().length() + 4] = '\0';
 			players[i].SendMsg(msg);
 		}
 	}

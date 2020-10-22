@@ -102,7 +102,13 @@ namespace test_client
                             continue;
                         }
                         //Получить номер отвечающего
-                        int numb = Convert.ToInt32(GetMsg());
+                        string tmpReply = GetMsg();
+                        if (tmpReply == "V")
+                        {
+                            victory = true;
+                            break;
+                        }
+                        int numb = Convert.ToInt32(tmpReply);
                         if (numb == 86)
                         {
                             victory = true;

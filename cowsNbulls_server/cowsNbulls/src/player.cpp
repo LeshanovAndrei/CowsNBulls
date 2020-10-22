@@ -61,18 +61,34 @@ int Player::GetCows()
 
 char* Player::GetMsg()
 {
-	char temp[32]; //Получим сначала размер сообщения, которое хотим получить
-	recv(connection, temp, sizeof(temp), NULL);
-
-	char* msg = new char[atoi(temp)];
-	recv(connection, msg, sizeof(msg), NULL);
+	char temp[2]; //Получим сначала размер сообщения, которое хотим получить
+	int x;
+	x = recv(connection, temp, sizeof(temp), NULL);
+	temp[1] = '\0';
+	int n = temp[0];
+	pollfd fds[1];
+	fds[0].fd = connection;
+	if (n < 1 or x < 0)
+	{
+		//std::cout << "Connection error!\n";
+		//Player::~Player();
+		char error[] = "\0";
+		//std::cout << x << '\n';
+		return error;
+	}
+	//std::cout << n<<'\n';
+	char* msg = new char[n + 1];
+	recv(connection, msg, n, NULL);
+	msg[n] = '\0';
 	return msg;
 }
 void Player::SendMsg(char* msg)
 {
-	char temp[32];
-	itoa(sizeof(msg), temp, 10);
-	send(connection, temp, sizeof(temp), NULL);
-	send(connection, msg, atoi(temp), NULL);
+	char temp[2];
+	//itoa(sizeof(msg)/sizeof(char), temp, 10);
+	temp[0] = strlen(msg);
+	temp[1] = 0;
+	send(connection, temp, 2, NULL);
+	send(connection, msg, temp[0], NULL);
 
 }

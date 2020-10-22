@@ -4,7 +4,7 @@
 class Stickman
 {
 public:
-
+	Stickman();
 	std::vector<int> AnswerCheck(char*);
 
 	char* GetAnswerNumber();
