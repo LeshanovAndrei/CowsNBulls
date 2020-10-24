@@ -28,54 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.myReplyTextBox = new System.Windows.Forms.TextBox();
-            this.myReplyLabel = new System.Windows.Forms.Label();
-            this.SendButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.answersTable = new System.Windows.Forms.DataGridView();
+            this.answerBox = new System.Windows.Forms.TextBox();
+            this.sendButton = new System.Windows.Forms.Button();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.replyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bullsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cowsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.answersTable)).BeginInit();
             this.SuspendLayout();
             // 
-            // myReplyTextBox
+            // answersTable
             // 
-            this.myReplyTextBox.Location = new System.Drawing.Point(126, 400);
-            this.myReplyTextBox.Name = "myReplyTextBox";
-            this.myReplyTextBox.Size = new System.Drawing.Size(100, 22);
-            this.myReplyTextBox.TabIndex = 0;
-            // 
-            // myReplyLabel
-            // 
-            this.myReplyLabel.AutoSize = true;
-            this.myReplyLabel.Location = new System.Drawing.Point(41, 403);
-            this.myReplyLabel.Name = "myReplyLabel";
-            this.myReplyLabel.Size = new System.Drawing.Size(65, 17);
-            this.myReplyLabel.TabIndex = 1;
-            this.myReplyLabel.Text = "My reply:";
-            // 
-            // SendButton
-            // 
-            this.SendButton.Location = new System.Drawing.Point(250, 398);
-            this.SendButton.Name = "SendButton";
-            this.SendButton.Size = new System.Drawing.Size(75, 23);
-            this.SendButton.TabIndex = 2;
-            this.SendButton.Text = "Send!";
-            this.SendButton.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.answersTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.answersTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NameColumn,
             this.replyColumn,
             this.bullsColumn,
             this.cowsColumn});
-            this.dataGridView1.Location = new System.Drawing.Point(126, 39);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(430, 150);
-            this.dataGridView1.TabIndex = 3;
+            this.answersTable.Location = new System.Drawing.Point(12, 12);
+            this.answersTable.Name = "answersTable";
+            this.answersTable.RowHeadersWidth = 51;
+            this.answersTable.RowTemplate.Height = 24;
+            this.answersTable.Size = new System.Drawing.Size(1017, 400);
+            this.answersTable.TabIndex = 3;
+            // 
+            // answerBox
+            // 
+            this.answerBox.Location = new System.Drawing.Point(322, 420);
+            this.answerBox.Name = "answerBox";
+            this.answerBox.Size = new System.Drawing.Size(100, 22);
+            this.answerBox.TabIndex = 4;
+            // 
+            // sendButton
+            // 
+            this.sendButton.Enabled = false;
+            this.sendButton.Location = new System.Drawing.Point(428, 419);
+            this.sendButton.Name = "sendButton";
+            this.sendButton.Size = new System.Drawing.Size(75, 23);
+            this.sendButton.TabIndex = 5;
+            this.sendButton.Text = "Send!";
+            this.sendButton.UseVisualStyleBackColor = true;
+            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.HeaderText = "Name";
+            this.NameColumn.MinimumWidth = 6;
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.Width = 280;
             // 
             // replyColumn
             // 
@@ -102,26 +103,24 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.SendButton);
-            this.Controls.Add(this.myReplyLabel);
-            this.Controls.Add(this.myReplyTextBox);
+            this.ClientSize = new System.Drawing.Size(1051, 450);
+            this.Controls.Add(this.sendButton);
+            this.Controls.Add(this.answerBox);
+            this.Controls.Add(this.answersTable);
             this.Name = "game";
             this.Text = "game";
             this.Load += new System.EventHandler(this.game_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.answersTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox myReplyTextBox;
-        private System.Windows.Forms.Label myReplyLabel;
-        private System.Windows.Forms.Button SendButton;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView answersTable;
+        private System.Windows.Forms.TextBox answerBox;
+        private System.Windows.Forms.Button sendButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn replyColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bullsColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cowsColumn;

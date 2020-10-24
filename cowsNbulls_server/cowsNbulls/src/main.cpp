@@ -22,6 +22,7 @@ void ConnectionError(SOCKET &sListen, SOCKET &newConnection, std::vector<Player>
 	shutdown(sListen, 2);
 	closesocket(newConnection);
 	closesocket(sListen);
+	system("pause");
 	exit(1);
 }
 
@@ -121,13 +122,13 @@ int main(int argc, char* argv[])
 	{
 		for (size_t j = 0; j < numOfPlayers; j++)
 		{
-			char* msg = new char[players[j].GetName().size() + 3];
-			msg[0] = j + 48;
-			msg[1] = ' ';
-			for (size_t i = 2; i < players[j].GetName().size() + 3; i++)
+			char* msg = new char[players[j].GetName().size() + 1];
+			/*msg[0] = j + 48;
+			msg[1] = ' ';*/
+			for (size_t c = 0; c < players[j].GetName().size() + 1; c++)
 			{
-				msg[i] = players[j].GetName()[i - 2];
-				msg[i + 1] = '\0';
+				msg[c] = players[j].GetName()[c];
+				msg[c + 1] = '\0';
 			}
 			//std::cout << msg << '\n';
 			players[i].SendMsg(msg);
@@ -162,7 +163,7 @@ int main(int argc, char* argv[])
 			}
 			//std::cout << "IN:\n";
 			auto reply = players[i].GetMsg();
-			if (reply == "-1")
+			if (reply == "\0")
 			{
 				ConnectionError(sListen, newConnection, players);
 			}
@@ -247,15 +248,15 @@ int main(int argc, char* argv[])
 	{
 		for (size_t j = 0; j < numOfPlayers; j++)
 		{
-			//0 Name 3
 			int n = players[j].GetName().length();
 			char* msg = new char[n + 1];
-			msg[0] = j + 48;
-			msg[1] = ' ';
-			strcat(msg, players[j].GetName().c_str());
-			msg[players[j].GetName().length() + 2] = ' ';
-			msg[players[j].GetName().length() + 3] = players[j].GetWins() + 48;
-			msg[players[j].GetName().length() + 4] = '\0';
+			for (size_t c = 0; c < n; c++)
+			{
+				msg[c] = players[j].GetName()[c];
+			}
+			msg[n] = ' ';
+			msg[n + 1] = players[j].GetWins() + 48;
+			msg[n + 2] = '\0';
 			players[i].SendMsg(msg);
 		}
 	}
@@ -264,5 +265,6 @@ int main(int argc, char* argv[])
 	shutdown(sListen, 2);
 	closesocket(newConnection);
 	closesocket(sListen);
+	system("pause");
 	return 0;
 }

@@ -33,6 +33,10 @@
             this.compCheck = new System.Windows.Forms.CheckBox();
             this.playersNumeric = new System.Windows.Forms.NumericUpDown();
             this.labelPlayers = new System.Windows.Forms.Label();
+            this.ipBox = new System.Windows.Forms.TextBox();
+            this.IPlabel = new System.Windows.Forms.Label();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.nameLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.playersNumeric)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,6 +48,7 @@
             this.createButton.TabIndex = 0;
             this.createButton.Text = "Create Server";
             this.createButton.UseVisualStyleBackColor = true;
+            this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
             // joinButton
             // 
@@ -53,6 +58,7 @@
             this.joinButton.TabIndex = 1;
             this.joinButton.Text = "Join server";
             this.joinButton.UseVisualStyleBackColor = true;
+            this.joinButton.Click += new System.EventHandler(this.joinButton_Click);
             // 
             // compCheck
             // 
@@ -80,11 +86,48 @@
             this.labelPlayers.TabIndex = 4;
             this.labelPlayers.Text = "Number of players";
             // 
+            // ipBox
+            // 
+            this.ipBox.Location = new System.Drawing.Point(477, 206);
+            this.ipBox.Name = "ipBox";
+            this.ipBox.Size = new System.Drawing.Size(142, 22);
+            this.ipBox.TabIndex = 5;
+            // 
+            // IPlabel
+            // 
+            this.IPlabel.AutoSize = true;
+            this.IPlabel.Location = new System.Drawing.Point(626, 210);
+            this.IPlabel.Name = "IPlabel";
+            this.IPlabel.Size = new System.Drawing.Size(20, 17);
+            this.IPlabel.TabIndex = 6;
+            this.IPlabel.Text = "IP";
+            // 
+            // nameBox
+            // 
+            this.nameBox.Location = new System.Drawing.Point(291, 320);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(181, 22);
+            this.nameBox.TabIndex = 7;
+            this.nameBox.Text = "Player";
+            // 
+            // nameLabel
+            // 
+            this.nameLabel.AutoSize = true;
+            this.nameLabel.Location = new System.Drawing.Point(288, 345);
+            this.nameLabel.Name = "nameLabel";
+            this.nameLabel.Size = new System.Drawing.Size(77, 17);
+            this.nameLabel.TabIndex = 8;
+            this.nameLabel.Text = "Your name";
+            // 
             // menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.nameLabel);
+            this.Controls.Add(this.nameBox);
+            this.Controls.Add(this.IPlabel);
+            this.Controls.Add(this.ipBox);
             this.Controls.Add(this.labelPlayers);
             this.Controls.Add(this.playersNumeric);
             this.Controls.Add(this.compCheck);
@@ -106,6 +149,10 @@
         private System.Windows.Forms.CheckBox compCheck;
         private System.Windows.Forms.NumericUpDown playersNumeric;
         private System.Windows.Forms.Label labelPlayers;
+        private System.Windows.Forms.TextBox ipBox;
+        private System.Windows.Forms.Label IPlabel;
+        private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.Label nameLabel;
     }
 }
 

@@ -74,6 +74,7 @@ namespace test_client
             //получить флаг игры с компьютером
             if (GetMsg() != "0")
             {
+                Console.WriteLine("1");
                 comp = true;
             }
 
@@ -131,9 +132,9 @@ namespace test_client
             //Таблица результатов
             for (int i = 0; i < numOfPlayers; i++)
             {
-                //Получить статистику
+                Console.WriteLine(GetMsg());
             }
-
+            Console.ReadLine();
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
         }
