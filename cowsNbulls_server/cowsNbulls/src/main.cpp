@@ -171,7 +171,6 @@ int main(int argc, char* argv[])
 				ConnectionError(sListen, newConnection, players);
 			}
 			stickman.SetAnswerNumber(reply);
-			delete[] reply;
 			//std::cout << stickman.GetAnswerNumber() << '\n';
 		}
 		else
