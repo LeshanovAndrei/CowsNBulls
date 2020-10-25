@@ -16,7 +16,7 @@ void ConnectionError(SOCKET &sListen, SOCKET &newConnection, std::vector<Player>
 	{
 		char error[] = "ConnectionError!";
 		players[i].SendMsg(error);
-		players[i].~Player();
+		players[i].Close();
 	}
 	shutdown(newConnection, 2);
 	shutdown(sListen, 2);
@@ -42,7 +42,8 @@ int main(int argc, char* argv[])
 	}
 	std::cout << "Server started for " << numOfPlayers << " players\n";
 
-	std::vector<Player> players;
+	//std::vector<Player> players;
+	Player* playersArr = new Player[numOfPlayers];
 	Stickman stickman;
 
 	WSAData wsaData;
@@ -76,32 +77,18 @@ int main(int argc, char* argv[])
 		else
 		{
 			std::cout << "Client Connected!\n";
-			players.push_back(*new Player(newConnection));
+			playersArr[i] = (*new Player(newConnection));
 
 		}
 
 	}
-	std::cout << numOfPlayers << " players conected!\n";
-	if (comp)
-	{
-		stickman.RandomizeAnswer();
-		std::cout << "Answer generated!\n";
-		std::cout << stickman.GetAnswerNumber() << '\n';
-	}
-
-
-	//Фаза регистрации
-	/*
-	Как только клиенты подключились, ждем от них данных для имен
-	*/
+	std::vector<Player> players;
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
-		players[i].SetName();
-		if (players[i].GetName() == "-1")
-		{
-			ConnectionError(sListen, newConnection, players);
-		}
+		players.push_back(playersArr[i]);
 	}
+	std::cout << numOfPlayers << " players conected!\n";
+	
 
 	//Пошлем количество игроков
 	//std::cout << "\nOUT:\n";
@@ -113,6 +100,22 @@ int main(int argc, char* argv[])
 		//std::cout << msg << '\n';
 		players[i].SendMsg(msg);
 	}
+
+	//Фаза регистрации
+	/*
+	Как только клиенты подключились, ждем от них данных для имен
+	*/
+	for (size_t i = 0; i < numOfPlayers; i++)
+	{
+		Sleep(1000);
+		players[i].SetName();
+		if (players[i].GetName()[0] == 0)
+		{
+			ConnectionError(sListen, newConnection, players);
+		}
+	}
+
+	
 
 	/*
 	Теперь нужно отправить всем игрокам имена остальных
@@ -171,6 +174,12 @@ int main(int argc, char* argv[])
 			delete[] reply;
 			//std::cout << stickman.GetAnswerNumber() << '\n';
 		}
+		else
+		{
+			stickman.RandomizeAnswer();
+			std::cout << "Answer generated!\n";
+			std::cout << stickman.GetAnswerNumber() << '\n';
+		}
 
 		while (!victory)//Пока не победа продолжай опрашивать
 		{
@@ -188,7 +197,7 @@ int main(int argc, char* argv[])
 					itoa(j, msg, 2);
 					msg[1] = '\0';
 					//std::cout << msg << '\n';
-					players[i].SendMsg(msg);
+					players[c].SendMsg(msg);
 				}
 				//Получим ответ
 				//std::cout << "IN:\n";
@@ -260,7 +269,10 @@ int main(int argc, char* argv[])
 			players[i].SendMsg(msg);
 		}
 	}
-
+	for (size_t i = 0; i < numOfPlayers; i++)
+	{
+		players[i].Close();
+	}
 	shutdown(newConnection, 2);
 	shutdown(sListen, 2);
 	closesocket(newConnection);

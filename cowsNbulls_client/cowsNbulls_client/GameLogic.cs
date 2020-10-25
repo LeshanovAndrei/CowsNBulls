@@ -52,7 +52,7 @@ namespace cowsNbulls_client
         public void Connect(string ip)
         {
             socket.Connect(ip, 1111);
-            SendMsg(name);
+
         }
 
         public void ConnectionError()
@@ -82,7 +82,11 @@ namespace cowsNbulls_client
             var sizeBuf = new byte[2];
             sizeBuf[0] = 0;
             sizeBuf[1] = 0;
-            socket.Receive(sizeBuf);
+            if (socket.Receive(sizeBuf) == 0)
+            {
+                ConnectionError();
+                return "-1";
+            }
             var buffer = new byte[sizeBuf[0]];
             socket.Receive(buffer);
             //for (int i = 0; i < sizeBuf[0]; i++)

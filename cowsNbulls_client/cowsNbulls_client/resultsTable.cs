@@ -27,7 +27,7 @@ namespace cowsNbulls_client
             {
                 string reply = g.GetMsg();
                 string name = null;
-                int j = 2;
+                int j = 0;
                 while (reply[j] != ' ')
                 {
                     name += reply[j];

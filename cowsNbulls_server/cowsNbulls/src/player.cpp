@@ -9,7 +9,40 @@ Player::Player(SOCKET newConnection) :
 {
 
 }
+Player::Player() :
+	wins(0),
+	bulls(0),
+	cows(0)
+{
+
+}
+
+Player::Player(const Player& p)
+{
+	bulls = p.bulls;
+	cows = p.cows;
+	wins = p.wins;
+	name = p.name;
+	connection = p.connection;
+}
+
+Player& Player::operator=(const Player& p)
+{
+	bulls = p.bulls;
+	cows = p.cows;
+	wins = p.wins;
+	name = p.name;
+	connection = p.connection;
+	return *this;
+}
+
 Player::~Player()
+{
+	/*shutdown(connection, 2);
+	closesocket(connection);*/
+}
+
+void Player::Close()
 {
 	shutdown(connection, 2);
 	closesocket(connection);

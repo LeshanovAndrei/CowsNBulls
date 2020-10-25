@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace cowsNbulls_client
@@ -15,13 +16,17 @@ namespace cowsNbulls_client
         GameLogic g { get; set; }
         List<string> names;
 
+        private delegate void SafeCallDelegate(string serverReply, int numb);
+        private delegate void SafeCallDelegateClear();
+
+
 
         public game(GameLogic g)
         {
             InitializeComponent();
             this.g = g;
-            g.NumOfPlayers = Convert.ToInt32(g.GetMsg());
-            g.NumOfPlayers = g.NumOfRounds;
+            //g.NumOfPlayers = Convert.ToInt32(g.GetMsg());
+            g.NumOfRounds = g.NumOfPlayers;
             names = new List<string>();
             for (int i = 0; i < g.NumOfPlayers; i++)
             {
@@ -69,9 +74,15 @@ namespace cowsNbulls_client
 
         private void game_Shown(object sender, EventArgs e)
         {
-            
+            Thread gameThread = new Thread(new ThreadStart(game_process));
+            gameThread.Start();
+        }
+
+        private void game_process()
+        {
             for (int i = 0; i < g.NumOfRounds; i++)
             {
+                g.Victory = false;
                 if (!g.Comp)
                 {
                     int numb = Convert.ToInt32(g.GetMsg());
@@ -96,6 +107,7 @@ namespace cowsNbulls_client
                             break;
                         }
                         int numb = Convert.ToInt32(tmpReply);//Номер отвечающего
+                        //MessageBox.Show(Convert.ToString(numb));
                         if (numb == 86)
                         {
                             g.Victory = true;
@@ -105,29 +117,60 @@ namespace cowsNbulls_client
                         {
                             SendAnswer();
                         }
+                        else
+                        {
+                            //Thread.Sleep(10000);
+                        }
+
                         string serverReply = g.GetMsg();
-                        answersTable.Rows.Add
+                        SafeTableWrite(serverReply, numb);
+
+
+                    }
+                }
+                MessageBox.Show("Victory!"); SafeTableClear();
+            }
+            resultsTable tab = new resultsTable(g);
+            tab.ShowDialog();
+        }
+
+
+        private void SafeTableWrite(string serverReply, int numb)
+        {
+            if (answersTable.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(SafeTableWrite);
+                answersTable.Invoke(d, serverReply, numb);
+            }
+            else
+            {
+                answersTable.Rows.Add
                             (
                             names[numb],
                                 Convert.ToString(serverReply[0])
-                            + 
-                                Convert.ToString(serverReply[1]) 
-                            + 
-                                Convert.ToString(serverReply[2]) 
+                            +
+                                Convert.ToString(serverReply[1])
+                            +
+                                Convert.ToString(serverReply[2])
                             +
                                 Convert.ToString(serverReply[3]),
                             serverReply[5],
                             serverReply[7]
                             );
-                    }
-                }
-                MessageBox.Show("Victory!");
-                resultsTable tab = new resultsTable(g);
-                tab.ShowDialog();
-                Close();
             }
         }
-
+        private void SafeTableClear()
+        {
+            if (answersTable.InvokeRequired)
+            {
+                var d = new SafeCallDelegateClear(SafeTableClear);
+                answersTable.Invoke(d);
+            }
+            else
+            {
+                answersTable.Rows.Clear();
+            }
+        }
         private void SendAnswer()
         {
             /*ДОБАВИТЬ ПРОВЕРКИ*/

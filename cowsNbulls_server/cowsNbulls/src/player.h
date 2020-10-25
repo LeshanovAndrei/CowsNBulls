@@ -5,12 +5,18 @@ class Player
 {
 public:
 	Player(SOCKET);
+	Player();
+	Player(const Player&);
 	~Player();
+
+	Player& operator=(const Player&);
 
 	char* TryToAnswer();
 
 	void SetName();
 	std::string GetName();
+
+	void Close();
 
 	SOCKET GetConnection();
 	void SetWins(int);

@@ -55,7 +55,14 @@ namespace cowsNbulls_client
             }
             g.Name = nameBox.Text;
             g.Connect(ip);
+            /*Подождем сообщения о том, что все присоединились*/
+            g.NumOfPlayers = Convert.ToInt32(g.GetMsg());
+            g.SendMsg(g.Name);
+            game menuForm = new game(g);
+            Hide();
+            menuForm.ShowDialog();
             Close();
+            
             //game gameForm = new game(g);
             //gameForm.Show();
         }
