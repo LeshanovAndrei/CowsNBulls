@@ -68,6 +68,7 @@ int main(int argc, char* argv[])
 	SOCKET newConnection;
 	for (size_t i = 0; i < numOfPlayers; i++)
 	{
+		//Принимаем подключения
 		newConnection = accept(sListen, (SOCKADDR*)&addr, &sizeofaddr);
 
 		if (!newConnection)
@@ -272,10 +273,11 @@ int main(int argc, char* argv[])
 	{
 		players[i].Close();
 	}
+	//Уйдем как надо, закрыв сокеты
 	shutdown(newConnection, 2);
 	shutdown(sListen, 2);
 	closesocket(newConnection);
 	closesocket(sListen);
-	system("pause");
+	//system("pause");
 	return 0;
 }

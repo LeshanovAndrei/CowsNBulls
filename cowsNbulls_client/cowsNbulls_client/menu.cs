@@ -57,10 +57,18 @@ namespace cowsNbulls_client
             g.Connect(ip);
             /*Подождем сообщения о том, что все присоединились*/
             g.NumOfPlayers = Convert.ToInt32(g.GetMsg());
-            g.SendMsg(g.Name);
-            game menuForm = new game(g);
-            Hide();
-            menuForm.ShowDialog();
+            if (g.NumOfPlayers == -1)
+            {
+                MessageBox.Show("Connection error!");
+                g.ConnectionError();
+            }
+            else
+            {
+                g.SendMsg(g.Name);
+                game menuForm = new game(g);
+                Hide();
+                menuForm.ShowDialog();
+            }
             Close();
             
             //game gameForm = new game(g);

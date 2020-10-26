@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace cowsNbulls_client
 {
@@ -51,7 +52,34 @@ namespace cowsNbulls_client
 
         public void Connect(string ip)
         {
-            socket.Connect(ip, 1111);
+            try
+            {
+                socket.Connect(ip, 1111);
+            }
+            catch(ArgumentNullException)
+            {
+                MessageBox.Show("Connect error!");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Connect error!");
+            }
+            catch (SocketException)
+            {
+                MessageBox.Show("Connect error!");
+            }
+            catch (ObjectDisposedException)
+            {
+                MessageBox.Show("Connect error!");
+            }
+            catch (NotSupportedException)
+            {
+                MessageBox.Show("Connect error!");
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Connect error!");
+            }
 
         }
 

@@ -26,6 +26,12 @@ namespace cowsNbulls_client
             for (int i = 0; i < g.NumOfPlayers; i++)
             {
                 string reply = g.GetMsg();
+                if (reply == "-1")
+                {
+                    MessageBox.Show("Connection error!");
+                    g.ConnectionError();
+                    Close();
+                }
                 string name = null;
                 int j = 0;
                 while (reply[j] != ' ')

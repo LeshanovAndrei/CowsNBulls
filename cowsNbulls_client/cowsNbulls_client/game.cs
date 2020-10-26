@@ -30,13 +30,27 @@ namespace cowsNbulls_client
             names = new List<string>();
             for (int i = 0; i < g.NumOfPlayers; i++)
             {
-                names.Add(g.GetMsg());
+                string tmpr = g.GetMsg();
+                if (tmpr == "-1")
+                {
+                    MessageBox.Show("Connection error!");
+                    g.ConnectionError();
+                    Close();
+                }
+                names.Add(tmpr);
                 if (names[i] == g.Name)
                 {
                     g.MyNum = i;
                 }
             }
-            if (g.GetMsg() == "1")
+            string tmp = g.GetMsg();
+            if (tmp == "-1")
+            {
+                MessageBox.Show("Connection error!");
+                g.ConnectionError();
+                Close();
+            }
+            if (tmp == "1")
             {
                 g.Comp = true;
             }
@@ -59,17 +73,7 @@ namespace cowsNbulls_client
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            //if (answerBox.Text == "")
-            //{
-            //    MessageBox.Show("Error! Empty answer.");
-            //    return;
-            //}
-            //if (answerBox.Text.Length != 4)
-            //{
-            //    MessageBox.Show("Error! Wrong answer format.");
-            //}
-            //g.SendMsg(answerBox.Text);
-            //sendButton.Enabled = false;
+
         }
 
         private void game_Shown(object sender, EventArgs e)
@@ -86,6 +90,12 @@ namespace cowsNbulls_client
                 if (!g.Comp)
                 {
                     int numb = Convert.ToInt32(g.GetMsg());
+                    if (numb == -1)
+                    {
+                        MessageBox.Show("Connection error!");
+                        g.ConnectionError();
+                        Close();
+                    }
                     if (numb == g.MyNum)
                     {
                         SendAnswer();
@@ -101,6 +111,12 @@ namespace cowsNbulls_client
                         }
                         //Получить номер отвечающего
                         string tmpReply = g.GetMsg();
+                        if (tmpReply == "-1")
+                        {
+                            MessageBox.Show("Connection error!");
+                            g.ConnectionError();
+                            Close();
+                        }
                         if (tmpReply == "V")
                         {
                             g.Victory = true;
@@ -123,9 +139,13 @@ namespace cowsNbulls_client
                         }
 
                         string serverReply = g.GetMsg();
+                        if (serverReply == "-1")
+                        {
+                            MessageBox.Show("Connection error!");
+                            g.ConnectionError();
+                            Close();
+                        }
                         SafeTableWrite(serverReply, numb);
-
-
                     }
                 }
                 MessageBox.Show("Victory!"); SafeTableClear();
