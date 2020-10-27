@@ -155,24 +155,26 @@ int main(int argc, char* argv[])
 	for (size_t i = 0; i < numOfRounds; i++)
 	{
 		bool victory = false;
+		//Если сервер не загадывает, спросим у игроков по очереди ответ
 		if (!comp)
 		{
-			//std::cout << "OUT:\n";
+			//Кто загадывает:
 			for (size_t c = 0; c < numOfPlayers; c++)
 			{
 				char msg[2];
 				itoa(i, msg, 2);
-				//std::cout << msg << '\n';
 				players[c].SendMsg(msg);
 			}
-			//std::cout << "IN:\n";
+			//Загадывай:
 			auto reply = players[i].GetMsg();
 			if (reply == "\0")
 			{
 				ConnectionError(sListen, newConnection, players);
 			}
 			stickman.SetAnswerNumber(reply);
-			//std::cout << stickman.GetAnswerNumber() << '\n';
+			std::cout << "Answer got!\n";
+			std::cout << stickman.GetAnswerNumber() << '\n';
+
 		}
 		else
 		{
@@ -181,6 +183,7 @@ int main(int argc, char* argv[])
 			std::cout << stickman.GetAnswerNumber() << '\n';
 		}
 
+		//Пока не победа в раунде:
 		while (!victory)//Пока не победа продолжай опрашивать
 		{
 			for (size_t j = 0; j < numOfPlayers; j++)//Опрашивай всех по очереди

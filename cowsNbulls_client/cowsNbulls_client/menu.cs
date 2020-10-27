@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Net.Sockets;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace cowsNbulls_client
@@ -46,7 +38,7 @@ namespace cowsNbulls_client
         }
 
         private void joinButton_Click(object sender, EventArgs e)
-        {/*ДОБАВИТЬ ПРОВЕРКИ*/
+        {
             string ip = ipBox.Text;
             if (ip == "")
             {

@@ -23,8 +23,6 @@ namespace cowsNbulls_client
             Application.SetCompatibleTextRenderingDefault(false);
             GameLogic g = new GameLogic();
             Application.Run(new menu(g));
-            //game gameForm = new game(g);
-            //Application.Run(gameForm);
         }
         
     }

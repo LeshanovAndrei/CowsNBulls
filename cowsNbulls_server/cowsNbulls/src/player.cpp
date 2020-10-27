@@ -95,22 +95,15 @@ int Player::GetCows()
 char* Player::GetMsg()
 {
 	char temp[2]; //Получим сначала размер сообщения, которое хотим получить
-	int x;
-	x = recv(connection, temp, sizeof(temp), NULL);
+	int x = recv(connection, temp, sizeof(temp), NULL);
 	temp[1] = '\0';
-	int n = temp[0];
-	pollfd fds[1];
-	fds[0].fd = connection;
+	int n = temp[0];//Сколько байт придет?
 	if (n < 1 or x < 0)
 	{
-		//std::cout << "Connection error!\n";
-		//Player::~Player();
 		char error[] = "\0";
-		//std::cout << x << '\n';
 		return error;
 	}
-	//std::cout << n<<'\n';
-	char* msg = new char[n + 1];
+	char* msg = new char[n + 1];//Само сообщение
 	recv(connection, msg, n, NULL);
 	msg[n] = '\0';
 	return msg;

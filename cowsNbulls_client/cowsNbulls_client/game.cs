@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -19,13 +13,10 @@ namespace cowsNbulls_client
         private delegate void SafeCallDelegate(string serverReply, int numb);
         private delegate void SafeCallDelegateClear();
 
-
-
         public game(GameLogic g)
         {
             InitializeComponent();
             this.g = g;
-            //g.NumOfPlayers = Convert.ToInt32(g.GetMsg());
             g.NumOfRounds = g.NumOfPlayers;
             names = new List<string>();
             for (int i = 0; i < g.NumOfPlayers; i++)
@@ -123,7 +114,6 @@ namespace cowsNbulls_client
                             break;
                         }
                         int numb = Convert.ToInt32(tmpReply);//Номер отвечающего
-                        //MessageBox.Show(Convert.ToString(numb));
                         if (numb == 86)
                         {
                             g.Victory = true;
@@ -134,8 +124,8 @@ namespace cowsNbulls_client
                             SendAnswer();
                         }
                         else
-                        {
-                            //Thread.Sleep(10000);
+                        { 
+
                         }
 
                         string serverReply = g.GetMsg();
