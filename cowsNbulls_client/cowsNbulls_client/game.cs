@@ -149,7 +149,7 @@ namespace cowsNbulls_client
                 MessageBox.Show("Victory!"); SafeTableClear();
             }
             resultsTable tab = new resultsTable(g);
-            tab.ShowDialog();
+            tab.Show();
             gameThread.Abort();
         }
 

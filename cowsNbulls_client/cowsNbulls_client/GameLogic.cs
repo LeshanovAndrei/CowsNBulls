@@ -123,8 +123,15 @@ namespace cowsNbulls_client
             sizeBuf[0] = 0;
             sizeBuf[1] = 0;
             sizeBuf[0] = Convert.ToByte(buffer.Length);
-            socket.Send(sizeBuf);
-            socket.Send(buffer);
+            if(socket.Send(sizeBuf) == 0)
+            {
+                ConnectionError();
+            }
+
+            if (socket.Send(buffer) == 0)
+            {
+                ConnectionError();
+            }
         }
         public string GetMsg()
         {

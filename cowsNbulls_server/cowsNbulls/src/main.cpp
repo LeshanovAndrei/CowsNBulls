@@ -197,7 +197,7 @@ int main(int argc, char* argv[])
 				for (size_t c = 0; c < numOfPlayers; c++)
 				{
 					char msg[2];
-					itoa(j, msg, 2);
+					msg[0] = j + 48;
 					msg[1] = '\0';
 					//std::cout << msg << '\n';
 					players[c].SendMsg(msg);
