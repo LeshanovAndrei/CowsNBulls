@@ -40,7 +40,18 @@ namespace cowsNbulls_client
         }
         ~GameLogic()
         {
-            socket.Shutdown(SocketShutdown.Both);
+            try
+            {
+                socket.Shutdown(SocketShutdown.Both);
+            }
+            catch (SocketException)
+            {
+
+            }
+            catch (ObjectDisposedException)
+            {
+
+            }
             socket.Close();
         }
         public string Name { get { return name; } set { name = value; } }
@@ -85,7 +96,18 @@ namespace cowsNbulls_client
 
         public void ConnectionError()
         {
-            socket.Shutdown(SocketShutdown.Both);
+            try
+            {
+                socket.Shutdown(SocketShutdown.Both);
+            }
+            catch (SocketException)
+            {
+
+            }
+            catch (ObjectDisposedException)
+            {
+
+            }
             socket.Close();
         }
 

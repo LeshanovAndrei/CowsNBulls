@@ -9,6 +9,7 @@ namespace cowsNbulls_client
     {
         GameLogic g { get; set; }
         List<string> names;
+        Thread gameThread;
 
         private delegate void SafeCallDelegate(string serverReply, int numb);
         private delegate void SafeCallDelegateClear();
@@ -50,6 +51,8 @@ namespace cowsNbulls_client
                 g.Comp = false;
             }
             Shown += game_Shown;
+            FormClosing += game_Closing;
+
         }
 
         private void game_Load(object sender, EventArgs e)
@@ -62,6 +65,11 @@ namespace cowsNbulls_client
         //    sendButton.Enabled = true;
         //}
 
+        private void game_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            gameThread.Abort();
+        }
+
         private void sendButton_Click(object sender, EventArgs e)
         {
 
@@ -69,7 +77,7 @@ namespace cowsNbulls_client
 
         private void game_Shown(object sender, EventArgs e)
         {
-            Thread gameThread = new Thread(new ThreadStart(game_process));
+            gameThread = new Thread(new ThreadStart(game_process));
             gameThread.Start();
         }
 
@@ -85,7 +93,7 @@ namespace cowsNbulls_client
                     {
                         MessageBox.Show("Connection error!");
                         g.ConnectionError();
-                        Close();
+                        gameThread.Abort();
                     }
                     if (numb == g.MyNum)
                     {
@@ -106,7 +114,7 @@ namespace cowsNbulls_client
                         {
                             MessageBox.Show("Connection error!");
                             g.ConnectionError();
-                            Close();
+                            gameThread.Abort();
                         }
                         if (tmpReply == "V")
                         {
@@ -133,7 +141,7 @@ namespace cowsNbulls_client
                         {
                             MessageBox.Show("Connection error!");
                             g.ConnectionError();
-                            Close();
+                            gameThread.Abort();
                         }
                         SafeTableWrite(serverReply, numb);
                     }
@@ -142,6 +150,7 @@ namespace cowsNbulls_client
             }
             resultsTable tab = new resultsTable(g);
             tab.ShowDialog();
+            gameThread.Abort();
         }
 
 
@@ -183,7 +192,6 @@ namespace cowsNbulls_client
         }
         private void SendAnswer()
         {
-            /*ДОБАВИТЬ ПРОВЕРКИ*/
             answerForm ansForm = new answerForm(g);
             ansForm.ShowDialog();
         }
