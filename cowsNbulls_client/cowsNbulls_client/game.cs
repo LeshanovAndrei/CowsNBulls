@@ -57,7 +57,7 @@ namespace cowsNbulls_client
 
         private void game_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         //private void SendAnswer()
@@ -97,7 +97,7 @@ namespace cowsNbulls_client
                     }
                     if (numb == g.MyNum)
                     {
-                        SendAnswer();
+                        SendNumber();
                     }
                 }
                 while (!g.Victory)
@@ -132,7 +132,7 @@ namespace cowsNbulls_client
                             SendAnswer();
                         }
                         else
-                        { 
+                        {
 
                         }
 
@@ -146,10 +146,13 @@ namespace cowsNbulls_client
                         SafeTableWrite(serverReply, numb);
                     }
                 }
-                MessageBox.Show("Victory!"); SafeTableClear();
+                MessageBox.Show("Victory!"); 
+                SafeTableClear();
             }
+
             resultsTable tab = new resultsTable(g);
-            tab.Show();
+            tab.ShowDialog();
+            Close();
             gameThread.Abort();
         }
 
@@ -194,6 +197,11 @@ namespace cowsNbulls_client
         {
             answerForm ansForm = new answerForm(g);
             ansForm.ShowDialog();
+        }
+        private void SendNumber()
+        {
+            GuessingForm guessingForm = new GuessingForm(g);
+            guessingForm.ShowDialog();
         }
     }
 }

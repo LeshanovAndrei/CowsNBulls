@@ -1,6 +1,6 @@
 ﻿namespace cowsNbulls_client
 {
-    partial class answerForm
+    partial class GuessingForm
     {
         /// <summary>
         /// Required designer variable.
@@ -61,7 +61,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Your answer:";
+            this.label1.Text = "Your number:";
             // 
             // answerForm
             // 
@@ -73,7 +73,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.sendButton);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "answerForm";
+            this.Name = "guessingForm";
             this.ShowIcon = false;
             this.Text = "answer";
             this.ResumeLayout(false);

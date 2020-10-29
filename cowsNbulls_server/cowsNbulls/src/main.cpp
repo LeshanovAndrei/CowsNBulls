@@ -9,9 +9,9 @@ bool compar(Player a, Player b) {
 
 }
 
-void ConnectionError(SOCKET &sListen, SOCKET &newConnection, std::vector<Player> &players)
+void ConnectionError(SOCKET& sListen, SOCKET& newConnection, std::vector<Player>& players)
 {
-	std::cout << "Connetcion Error!\n";
+	std::cout << "Connection Error!\n";
 	for (size_t i = 0; i < players.size(); i++)
 	{
 		char error[] = "ConnectionError!";
@@ -22,10 +22,9 @@ void ConnectionError(SOCKET &sListen, SOCKET &newConnection, std::vector<Player>
 	shutdown(sListen, 2);
 	closesocket(newConnection);
 	closesocket(sListen);
-	system("pause");
+	//system("pause");
 	exit(1);
 }
-
 int main(int argc, char* argv[])
 {
 	if (argc < 3)
@@ -162,7 +161,9 @@ int main(int argc, char* argv[])
 			for (size_t c = 0; c < numOfPlayers; c++)
 			{
 				char msg[2];
-				itoa(i, msg, 2);
+				//itoa(i, msg, 2);
+				msg[0] = i + 48;
+				msg[1] = '\0';
 				players[c].SendMsg(msg);
 			}
 			//Загадывай:
@@ -269,6 +270,7 @@ int main(int argc, char* argv[])
 			msg[n] = ' ';
 			msg[n + 1] = players[j].GetWins() + 48;
 			msg[n + 2] = '\0';
+			std::cout << msg << std::endl;
 			players[i].SendMsg(msg);
 		}
 	}
@@ -276,7 +278,7 @@ int main(int argc, char* argv[])
 	{
 		players[i].Close();
 	}
-	//Уйдем как надо, закрыв сокеты
+	//Уйдем, закрыв сокеты
 	shutdown(newConnection, 2);
 	shutdown(sListen, 2);
 	closesocket(newConnection);

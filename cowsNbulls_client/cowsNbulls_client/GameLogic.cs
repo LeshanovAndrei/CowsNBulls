@@ -17,7 +17,7 @@ namespace cowsNbulls_client
         static bool comp;
         static bool victory;
         static int myNum;
-        
+
 
         public void init()
         {
@@ -67,7 +67,7 @@ namespace cowsNbulls_client
             {
                 socket.Connect(ip, 1111);
             }
-            catch(ArgumentNullException)
+            catch (ArgumentNullException)
             {
                 MessageBox.Show("Connect error!");
             }
@@ -123,7 +123,7 @@ namespace cowsNbulls_client
             sizeBuf[0] = 0;
             sizeBuf[1] = 0;
             sizeBuf[0] = Convert.ToByte(buffer.Length);
-            if(socket.Send(sizeBuf) == 0)
+            if (socket.Send(sizeBuf) == 0)
             {
                 ConnectionError();
             }

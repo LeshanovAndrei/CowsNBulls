@@ -59,6 +59,12 @@
       <DependentUpon>game.cs</DependentUpon>
     </Compile>
     <Compile Include="GameLogic.cs" />
+    <Compile Include="GuessingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GuessingForm.Designer.cs">
+      <DependentUpon>GuessingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="menu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="game.resx">
       <DependentUpon>game.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GuessingForm.resx">
+      <DependentUpon>GuessingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="menu.resx">
       <DependentUpon>menu.cs</DependentUpon>

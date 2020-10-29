@@ -18,7 +18,7 @@ namespace cowsNbulls_client
             InitializeComponent();
             this.g = g;
             Shown += resultsTable_Shown;
-            
+
         }
 
         private void resultsTable_Shown(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace cowsNbulls_client
                     name += reply[j];
                     j++;
                 }
-                dataGridView1.Rows.Add(name, reply[reply.Length - 1]);
+                dataGridView1.Rows.Add(i+1, name, reply[reply.Length - 1]);
             }
         }
 
