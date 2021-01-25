@@ -10,7 +10,7 @@ namespace cowsNbulls_client
         {
             this.g = g;
             InitializeComponent();
-            playersNumeric.Maximum = 4;
+            playersNumeric.Maximum = 9;
             playersNumeric.Minimum = 1;
         }
 
